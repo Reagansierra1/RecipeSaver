@@ -1,0 +1,18 @@
+/* from chatgpt */
+
+h1 {
+  text-align: left;       /* align header to the left */
+  margin: 1rem 0;         /* spacing above/below */
+  font-size: 2rem;
+  padding-left: 1rem;     /* optional: align with grid */
+}
+
+/* Grid layout for RecipeCards */
+.recipe-grid {
+  display: flex;
+  flex-wrap: wrap;         /* allows cards to wrap */
+  justify-content: flex-start; /* align cards to left instead of center */
+  gap: 1rem;
+  padding-left: 1rem;      /* optional: align with page header */
+  padding-bottom: 2rem;
+}

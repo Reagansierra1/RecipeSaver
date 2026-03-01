@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import RecipeCard from "../components/RecipeCard";
+import { FavoritedRecipesContext } from "../context/FavoritedRecipesContext";
 
 function FavoritesPage() {
+  const { favoritedRecipes } = useContext(FavoritedRecipesContext);
+
   return (
     <div>
       <h1>Favorite Recipes</h1>
-      <p>Your favorited recipes will appear here.</p>
-      <RecipeCard
-        title="Chocolate Cake"
-        image="https://placehold.co/600x400"
-        description="A delicious chocolate cake"
-      />
-      <RecipeCard
-        title="Blueberry Muffins"
-        image="https://placehold.co/600x400"
-        description="A great morning meal for on the go!"
-      />
+      {favoritedRecipes.length === 0 ? (
+        <p>No favorited recipes yet.</p>
+      ) : (
+        <div className="recipe-grid">
+          {favoritedRecipes.map((recipe) => (
+            <RecipeCard
+              recipe={recipe}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

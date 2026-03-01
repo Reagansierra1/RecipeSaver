@@ -1,0 +1,6 @@
+.recipe-grid {
+  display: flex;
+  flex-wrap: wrap;          /* allows cards to wrap to the next row */
+  gap: 1rem;                /* space between cards */
+  justify-content: center;  /* center the grid on the page */
+}

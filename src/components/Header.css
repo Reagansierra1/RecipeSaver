@@ -1,0 +1,61 @@
+/* From ChatGpt*/
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* keeps left and right at edges */
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Left, center, right sections */
+.header-left,
+.header-center,
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Center grows to fill space and centers nav links */
+.header-center {
+  flex: 1;
+  justify-content: center;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+
+/* Nav links styling */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #4caf50;
+}
+
+/* Login button styling */
+.login-btn {
+  padding: 6px 12px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-btn:hover {
+  background-color: #45a049;
+}

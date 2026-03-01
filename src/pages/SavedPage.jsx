@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import RecipeCard from "../components/RecipeCard";
+import { SavedRecipesContext } from "../context/SavedRecipesContext";
+import "./SavedPage.css";
 
 function SavedPage() {
+  const { savedRecipes } = useContext(SavedRecipesContext);
   return (
     <div>
       <h1>Saved Recipes</h1>
-      <p>Your saved recipes will appear here.</p>
-      <RecipeCard
-        title="Chocolate Cake"
-        image="https://placehold.co/600x400"
-        description="A delicious chocolate cake"
-      />
-      <RecipeCard
-        title="Blueberry Muffins"
-        image="https://placehold.co/600x400"
-        description="A great morning meal for on the go!"
-      />
+      {savedRecipes.length === 0 ? (
+        <p>No saved recipes yet.</p>
+      ) : (
+        <div className="recipe-grid">
+          {savedRecipes.map((recipe) => (
+            <RecipeCard
+              recipe={recipe}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
