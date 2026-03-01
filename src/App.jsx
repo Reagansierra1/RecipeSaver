@@ -21,6 +21,7 @@ function App() {
               <Route path="/saved" element={<SavedPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="*" element={<h1>404 - Page Not Found</h1>} />
             </Routes>
           </BrowserRouter>
         </FavoritedRecipesProvider>
