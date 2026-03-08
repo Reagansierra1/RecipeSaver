@@ -11,6 +11,10 @@ function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  const sanitizeInput = (input) => {
+    return input.replace(/[<>]/g, "");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
@@ -22,8 +26,10 @@ function LoginPage() {
       return;
     }
 
+    const cleanUsername = sanitizeInput(username);
+    const cleanPassword = sanitizeInput(password);
     // Basic validation
-    if (!username.trim() || !password.trim()) {
+    if (!cleanUsername.trim() || !cleanPassword.trim()) {
       setError('Please enter both username and password');
       return;
     }
@@ -34,7 +40,7 @@ function LoginPage() {
 
       // Find matching user
       const validUser = users.find(
-        (u) => u.username === username && u.password === password
+        (u) => u.username === cleanUsername && u.password === cleanPassword
       );
 
       // If user not found
@@ -44,7 +50,7 @@ function LoginPage() {
       }
 
       // Call AuthContext login
-      login(username, password, selectedRole);
+      login(cleanUsername, cleanPassword, selectedRole);
 
       // Redirect after login
       navigate('/saved');

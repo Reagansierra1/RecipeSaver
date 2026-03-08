@@ -59,7 +59,7 @@ function RegisterPage() {
       return;
     }
 
-    const newUser = { cleanUsername, cleanPassword };
+    const newUser = { username: cleanUsername, password: cleanPassword, role: "regular" };
 
     const updatedUsers = [...users, newUser];
 
