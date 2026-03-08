@@ -15,6 +15,13 @@ function LoginPage() {
     e.preventDefault();
     setError('');
 
+    const storedToken = sessionStorage.getItem("csrfToken");
+
+    if (!storedToken) {
+      setError("Security validation failed. Please refresh.");
+      return;
+    }
+
     // Basic validation
     if (!username.trim() || !password.trim()) {
       setError('Please enter both username and password');
@@ -56,6 +63,7 @@ function LoginPage() {
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>
+          <input type="hidden" name="csrfToken" value={sessionStorage.getItem("csrfToken") || ""}/>
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input

@@ -14,11 +14,23 @@ export function useAuth() {
 
 // AuthProvider component
 export function AuthProvider({ children }) {
-  useEffect(() => {
-      const token = localStorage.getItem("authToken");
-      const storedUser = JSON.parse(localStorage.getItem("authUser"));
+  //create a csrf token for more security on logins
+  const generateCSRFToken = () => {
+    return crypto.randomUUID();
+  };
 
-      if (token && storedUser) {
+  useEffect(() => {
+      const existingToken = sessionStorage.getItem("csrfToken");
+
+      if (!existingToken) {
+        const token = generateCSRFToken();
+        sessionStorage.setItem("csrfToken", token);
+      }
+      
+      const authToken = sessionStorage.getItem("authToken");
+      const storedUser = JSON.parse(sessionStorage.getItem("authUser"));
+
+      if (authToken && storedUser) {
         setUser(storedUser);
       }
   }, []);
@@ -27,6 +39,8 @@ export function AuthProvider({ children }) {
   // Check if user is authenticated
   const isAuthenticated = user !== null;
 
+  
+
   // Login function - simulates API call
   const login = (username, password, role = 'regular') => {
     // In a real app, you'd send credentials to an API
@@ -34,7 +48,7 @@ export function AuthProvider({ children }) {
     
     // Simulate creating a JWT token
     const mockToken = `mock_jwt_token_${Date.now()}`;
-    
+
     // Create user object
     const userData = {
       username: username,
@@ -46,8 +60,8 @@ export function AuthProvider({ children }) {
     setUser(userData);
     
     // In a real app, you might also store the token in localStorage
-    localStorage.setItem('authToken', mockToken);
-    localStorage.setItem('authUser', JSON.stringify(userData));
+    sessionStorage.setItem('authToken', mockToken);
+    sessionStorage.setItem('authUser', JSON.stringify(userData));
     
     return userData;
   };
@@ -55,8 +69,9 @@ export function AuthProvider({ children }) {
   // Logout function
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('authUser');
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('authUser');
+    sessionStorage.removeItem('csrfToken');
   };
 
   // Check if user has a specific role

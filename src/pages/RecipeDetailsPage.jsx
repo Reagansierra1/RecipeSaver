@@ -47,7 +47,7 @@ function RecipeDetailsPage() {
 
       <div className="recipe-details-buttons">
         <button className="recipe-btn" onClick={handleSavedClick}>{saved ? 'Saved' : 'Save'}</button>
-        <button className="recipe-btn" onClick={handleFavoritedClick}>{favorited ? '<3' : 'Favorite' }</button>
+        <button className="recipe-btn" onClick={handleFavoritedClick}>{favorited ? '❤️' : '🤍' }</button>
       </div>
 
       <div className="recipe-details-instructions">

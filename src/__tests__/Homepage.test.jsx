@@ -4,6 +4,7 @@ import { SavedRecipesProvider } from "../context/SavedRecipesContext";
 import { FavoritedRecipesProvider } from "../context/FavoritedRecipesContext";
 import { AuthProvider } from "../context/AuthContext";
 import { vi, describe, beforeEach, afterEach, expect } from "vitest";
+import { BrowserRouter } from 'react-router-dom';
 
 const mockData = {
   meals: [
@@ -36,13 +37,19 @@ const localStorageMock = {
 };
 vi.stubGlobal("localStorage", localStorageMock);
 
-const Providers = ({ children }) => (
-  <AuthProvider>
-    <SavedRecipesProvider>
-      <FavoritedRecipesProvider>{children}</FavoritedRecipesProvider>
-    </SavedRecipesProvider>
-  </AuthProvider>
-);
+const renderFunction = () => {
+  render(
+    <BrowserRouter>
+      <AuthProvider>
+      <SavedRecipesProvider>
+        <FavoritedRecipesProvider>
+        <HomePage />
+        </FavoritedRecipesProvider>
+      </SavedRecipesProvider>
+      </AuthProvider>
+    </BrowserRouter>
+    );
+};
 
 describe("HomePage", () => {
   beforeEach(() => {
@@ -64,20 +71,12 @@ describe("HomePage", () => {
   });
 
   test("displays loading initially", () => {
-    render(
-      <Providers>
-        <HomePage />
-      </Providers>
-    );
+    renderFunction();
     expect(screen.getByText(/Loading recipes/i)).toBeInTheDocument();
   });
 
   test("renders multiple recipe cards with correct data", async () => {
-    render(
-      <Providers>
-        <HomePage />
-      </Providers>
-    );
+    renderFunction();
 
     await waitFor(() => {
       mockData.meals.forEach((meal) => {
@@ -96,12 +95,7 @@ describe("HomePage", () => {
   test("can save a recipe and update localStorage", async () => {
     localStorageMock.getItem.mockReturnValueOnce(null);
 
-    render(
-      <Providers>
-        <HomePage />
-      </Providers>
-    );
-
+    renderFunction();
     await waitFor(() => {
       const saveButtons = screen.getAllByText("Save");
       fireEvent.click(saveButtons[0]);
@@ -118,11 +112,7 @@ describe("HomePage", () => {
   test("can favorite a recipe and update localStorage", async () => {
     localStorageMock.getItem.mockReturnValueOnce(null); 
 
-    render(
-      <Providers>
-        <HomePage />
-      </Providers>
-    );
+    renderFunction();
 
     await waitFor(() => {
       const favoriteButtons = screen.getAllByText("Favorite");

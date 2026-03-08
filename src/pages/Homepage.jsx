@@ -9,7 +9,19 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  //This essentially removes all angle brackets so that malcious code, suh as <script></script> can not be saved as a searchterm and potentially execute
+  const sanitizeSearch = (input) => {
+    return input.replace(/[<>]/g, "");
+  };
+
   useEffect(() => {
+    const cleaned = sanitizeSearch(searchTerm.trim());
+
+    if (cleaned.length > 50) {
+      setError("Search term too long");
+      return;
+    }
+
     const getRecipes = async () => {
       try {
         const query = searchTerm || "";

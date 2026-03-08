@@ -41,7 +41,7 @@ function RecipeCard({ recipe }) {
       <p onClick={handleClick} >{recipe.strInstructions.slice(0, 100)}...</p>
       <div>
         <button onClick={handleSavedClick}>{saved ? 'Saved' : 'Save'}</button>
-        <button onClick={handleFavoritedClick}>{favorited ? '<3' : 'Favorite' }</button>
+        <button onClick={handleFavoritedClick}>{favorited ? '❤️' : '🤍' }</button>
       </div>
     </div>
   );

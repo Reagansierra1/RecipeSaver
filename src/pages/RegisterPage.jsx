@@ -10,30 +10,56 @@ function RegisterPage() {
 
   const navigate = useNavigate();
 
+  //This essentially removes all angle brackets so that malcious code, suh as <script></script> can not be saved as a username nor password and potentially execute
+  const sanitizeInput = (input) => {
+    return input.replace(/[<>]/g, "");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
-    if (!username.trim() || !password.trim() || !confirmPassword.trim()) {
+    const storedToken = sessionStorage.getItem("csrfToken");
+
+    if (!storedToken) {
+      setError("Security validation failed.");
+      return;
+    }
+
+    const cleanUsername = sanitizeInput(username);
+    const cleanPassword = sanitizeInput(password);
+    const cleanConfirmPassword = sanitizeInput(confirmPassword);
+
+    if (!cleanUsername.trim() || !cleanPassword.trim() || !cleanConfirmPassword.trim()) {
       setError("Please fill out all fields.");
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (cleanUsername.length > 30) {
+      setError("Username too long");
+      return;
+    }
+
+    if(cleanPassword.length < 8){
+      setError("Password too short");
+      return;
+    }
+
+    if (cleanPassword !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    const userExists = users.find((u) => u.username === username);
+    const userExists = users.find((u) => u.username === cleanUsername);
 
     if (userExists) {
       setError("Username already exists.");
       return;
     }
 
-    const newUser = { username, password };
+    const newUser = { cleanUsername, cleanPassword };
 
     const updatedUsers = [...users, newUser];
 
@@ -53,6 +79,7 @@ function RegisterPage() {
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>
+          <input type="hidden" name="csrfToken" value={sessionStorage.getItem("csrfToken") || ""}/>
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
