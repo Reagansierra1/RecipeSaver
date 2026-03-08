@@ -1,4 +1,4 @@
-/* From ChatGpt*/
+/* From ChatGPT */
 .header {
   display: flex;
   align-items: center;
@@ -46,7 +46,7 @@
   color: #4caf50;
 }
 
-/* Login button styling */
+/* Login / Logout button styling */
 .login-btn {
   padding: 6px 12px;
   background-color: #4caf50;
@@ -54,8 +54,36 @@
   border-radius: 4px;
   text-decoration: none;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .login-btn:hover {
   background-color: #45a049;
+}
+
+/* User info container when logged in */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* space between username and logout button */
+  font-weight: 500; /* optional, makes username stand out */
+  color: #333;
+}
+
+.user-info .username {
+  font-size: 1rem;
+}
+
+.user-info .logout-btn {
+  padding: 6px 12px;
+  background-color: #f44336; /* red for logout */
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  font-weight: 500;
+}
+
+.user-info .logout-btn:hover {
+  background-color: #d32f2f;
 }

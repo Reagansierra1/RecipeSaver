@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
 import RecipeCard from "../components/RecipeCard";
 import { SavedRecipesContext } from "../context/SavedRecipesContext";
 import "./SavedPage.css";
 
 function SavedPage() {
   const { savedRecipes } = useContext(SavedRecipesContext);
+
   return (
     <div>
       <h1>Saved Recipes</h1>

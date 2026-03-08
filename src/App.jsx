@@ -8,6 +8,8 @@ import Header from "./components/Header";
 import { SavedRecipesProvider } from "./context/SavedRecipesContext";
 import { FavoritedRecipesProvider } from "./context/FavoritedRecipesContext";
 import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from './components/ProtectedRoute';
+import RecipeDetailsPage from "./pages/RecipeDetailsPage";
 
 function App() {
   return (
@@ -18,9 +20,10 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/saved" element={<SavedPage />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="/saved" element={<ProtectedRoute><SavedPage /></ProtectedRoute>} />
+              <Route path="/favorites" element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/recipe" element={<RecipeDetailsPage />} />
               <Route path="*" element={<h1>404 - Page Not Found</h1>} />
             </Routes>
           </BrowserRouter>

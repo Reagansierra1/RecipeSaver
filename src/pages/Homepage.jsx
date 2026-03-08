@@ -5,13 +5,15 @@ import './Homepage.css'
 
 function HomePage() {
   const [recipes, setRecipes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const getRecipes = async () => {
       try {
-        const data = await fetchRecipes();
+        const query = searchTerm || "";
+        const data = await fetchRecipes(query);
         setRecipes(data);
       } catch (err) {
         setError("Failed to load recipes.");
@@ -21,7 +23,7 @@ function HomePage() {
     };
 
     getRecipes();
-  }, []);
+  }, [searchTerm]);
 
   if (loading) {
     return (
@@ -47,6 +49,8 @@ function HomePage() {
         <input
           type="text"
           placeholder="Search recipes..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <button>Search</button>
       </div>
