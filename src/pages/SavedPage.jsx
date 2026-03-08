@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import RecipeCard from "../components/RecipeCard";
-import { SavedRecipesContext } from "../context/SavedRecipesContext";
+import { useRecipes } from "../context/SavedRecipesContext";
 import "./SavedPage.css";
 
 function SavedPage() {
-  const { savedRecipes } = useContext(SavedRecipesContext);
+  const { savedRecipes } = useRecipes();
 
   return (
     <div>

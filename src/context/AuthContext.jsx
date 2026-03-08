@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Create the context
 const AuthContext = createContext(null);
@@ -14,6 +14,14 @@ export function useAuth() {
 
 // AuthProvider component
 export function AuthProvider({ children }) {
+  useEffect(() => {
+      const token = localStorage.getItem("authToken");
+      const storedUser = JSON.parse(localStorage.getItem("authUser"));
+
+      if (token && storedUser) {
+        setUser(storedUser);
+      }
+  }, []);
   const [user, setUser] = useState(null);
 
   // Check if user is authenticated
@@ -39,6 +47,7 @@ export function AuthProvider({ children }) {
     
     // In a real app, you might also store the token in localStorage
     localStorage.setItem('authToken', mockToken);
+    localStorage.setItem('authUser', JSON.stringify(userData));
     
     return userData;
   };
@@ -47,6 +56,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('authToken');
+    localStorage.removeItem('authUser');
   };
 
   // Check if user has a specific role

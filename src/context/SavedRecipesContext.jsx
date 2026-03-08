@@ -1,28 +1,54 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 
-export const SavedRecipesContext = createContext();
+const SavedRecipesContext = createContext();
 
-export const SavedRecipesProvider = ({ children }) => {
-  const [savedRecipes, setSavedRecipes] = useState(() => {
-    const stored = localStorage.getItem("savedRecipes");
-    return stored ? JSON.parse(stored) : [];
-  });
+export function SavedRecipesProvider({ children }) {
+  const { user } = useAuth();
+  const [savedRecipes, setSavedRecipes] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));
-  }, [savedRecipes]);
+    if (!user) {
+      setSavedRecipes([]);
+      return;
+    }
+
+    const allRecipes = JSON.parse(localStorage.getItem("savedRecipesByUser")) || {};
+    const userRecipes = allRecipes[user.username] || [];
+    setSavedRecipes(userRecipes);
+  }, [user]);
 
   const saveRecipe = (recipe) => {
-    if (!savedRecipes.some((r) => r.idMeal === recipe.idMeal)) {
-      setSavedRecipes([...savedRecipes, recipe]);
-    }
+    if (!user) return;
+
+    setSavedRecipes((prev) => {
+      if (prev.find((r) => r.idMeal === recipe.idMeal)) return prev;
+      const updated = [...prev, recipe];
+
+      const allRecipes = JSON.parse(localStorage.getItem("savedRecipesByUser")) || {};
+      allRecipes[user.username] = updated;
+      localStorage.setItem("savedRecipesByUser", JSON.stringify(allRecipes));
+
+      return updated;
+    });
   };
 
   const removeRecipe = (idMeal) => {
-    setSavedRecipes(savedRecipes.filter((r) => r.idMeal !== idMeal));
+    if (!user) return;
+
+    setSavedRecipes((prev) => {
+      const updated = prev.filter((r) => r.idMeal !== idMeal);
+
+      const allRecipes = JSON.parse(localStorage.getItem("savedRecipesByUser")) || {};
+      allRecipes[user.username] = updated;
+      localStorage.setItem("savedRecipesByUser", JSON.stringify(allRecipes));
+
+      return updated;
+    });
   };
 
   const isSaved = (idMeal) => {
+    if (!user) return false;
     return savedRecipes.some((r) => r.idMeal === idMeal);
   };
 
@@ -31,12 +57,10 @@ export const SavedRecipesProvider = ({ children }) => {
       {children}
     </SavedRecipesContext.Provider>
   );
-};
+}
 
 export const useRecipes = () => {
   const context = useContext(SavedRecipesContext);
-  if (!context) {
-    throw new Error('useRecipes must be used within RecipesProvider');
-  }
+  if (!context) throw new Error("useRecipes must be used within SavedRecipesProvider");
   return context;
 };

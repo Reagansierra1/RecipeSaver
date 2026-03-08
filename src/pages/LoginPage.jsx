@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
@@ -21,12 +21,27 @@ function LoginPage() {
       return;
     }
 
-    // Mock authentication - accepts any username/password
-    // In a real app, this would validate against a backend
     try {
+      // Get stored users
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Find matching user
+      const validUser = users.find(
+        (u) => u.username === username && u.password === password
+      );
+
+      // If user not found
+      if (!validUser) {
+        setError("Invalid username or password");
+        return;
+      }
+
+      // Call AuthContext login
       login(username, password, selectedRole);
-      // Redirect to saved articles after successful login
+
+      // Redirect after login
       navigate('/saved');
+
     } catch (err) {
       setError('Login failed. Please try again.');
     }
@@ -79,12 +94,9 @@ function LoginPage() {
             Login
           </button>
         </form>
-
-        <div className="demo-accounts">
-          <p className="demo-title">Demo Accounts (for testing):</p>
-          <p>Any username/password combination will work</p>
-          <p>Select "Regular" or "Premium" to test different access levels</p>
-        </div>
+        <p className="register-link">
+        Don't have an account? <Link to="/register">Register here</Link>
+      </p>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import { FavoritedRecipesProvider } from "./context/FavoritedRecipesContext";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from './components/ProtectedRoute';
 import RecipeDetailsPage from "./pages/RecipeDetailsPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/favorites" element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/recipe" element={<RecipeDetailsPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route path="*" element={<h1>404 - Page Not Found</h1>} />
             </Routes>
           </BrowserRouter>
