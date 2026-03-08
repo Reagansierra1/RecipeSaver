@@ -29,6 +29,7 @@ This is a website that allows users to look for recipes and save/favorite them f
 - /favorites (FavoritesPage)
 - /login (LoginPage)
 - /register (RegisterPage)
+- /recipe (Recipe Page)
 
 ### Homepage
 This is the page where all recipes available are listed. As of now, users can savea and favorite these recipes to be saved later. Features to be added later
@@ -45,6 +46,9 @@ This is the page where users can log in or create an account. Features to be add
 
 ### Register Page
 This is the page where users can register an account. Features to be added:
+
+### Recipe Page
+This is the page where users can find more information regarding recipes. Features to be added:
 
 ## APIs Used
 - MealDB https://www.themealdb.com/api.php
